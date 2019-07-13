@@ -4,7 +4,7 @@ class Searchbar extends Component {
   render() {
     return (
       <div className="icon ui input">
-        <input type="text" list="stocks" placeholder="Choose language..." />
+        <input type="text" list="stocks" placeholder="Search for a stock..." />
         <datalist id="stocks">
           <option value="English"></option>
           <option value="Chinese"></option>

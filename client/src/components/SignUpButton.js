@@ -1,28 +1,61 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Form  } from 'semantic-ui-react';
 
 class SignUpButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSignUpOpen: false
+      isSignUpOpen: false,
+      existingEmail: false,
+      badPassword: false
     }
   }
 
-  toggleSignUp = (event) => {
+  toggleSignUp = () => {
     this.setState((state) => {
       return {isSignUpOpen: !state.isSignUpOpen};
     });
   }
 
+  registerAccount = (event) => {
+    console.log(event.target.name.value);
+    this.toggleSignUp();
+  }
+
   render() {
+    let warning = <div />;
+    const existingEmail = this.state.existingEmail;
+    const badPassword = this.state.badPassword;
+    if (existingEmail && badPassword) {
+      warning = <div />;
+    } else if (existingEmail) {
+      warning = <div />;
+    } else {
+      warning = <div />;
+    }
+
     return (
       <div>
         <button onClick={this.toggleSignUp} className="ui button">Sign-Up</button>
         <Modal open={this.state.isSignUpOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSignUp} >
           <Modal.Header>Create a new Account</Modal.Header>
           <Modal.Content>
-
+            <Form onSubmit={this.registerAccount} >
+              <Form.Field>
+                <label>Full Name</label>
+                <input defaultValue="" name="name" placeholder='John Doe' />
+              </Form.Field>
+              <Form.Field>
+                <label>E-mail</label>
+                <input defaultValue="" name="email" placeholder='example@mail.com' />
+              </Form.Field>
+              <Form.Field>
+                <label>Password</label>
+                <input defaultValue="" name="password" placeholder='Password' />
+              </Form.Field>
+              {warning}
+              <Button type='submit'>Register</Button>
+            </Form>
           </Modal.Content>
         </Modal>
       </div>
