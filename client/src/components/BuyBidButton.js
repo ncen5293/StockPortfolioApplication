@@ -36,7 +36,7 @@ class SignUpButton extends Component {
 
     return (
       <div>
-        <Button onClick={this.toggleSignUp} icon='plus' labelPosition='left' content="Sign-Up"/>
+        <Button size="mini" onClick={this.toggleSignUp} content="Buy Bid Price"/>
         <Modal open={this.state.isSignUpOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSignUp} >
           <Modal.Header>Create a new Account</Modal.Header>
           <Modal.Content>

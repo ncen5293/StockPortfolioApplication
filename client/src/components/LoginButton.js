@@ -26,10 +26,10 @@ class LoginButton extends Component {
     if (this.state.loginError) {
       warning = <div />;
     }
-    
+
     return (
       <div>
-        <button onClick={this.toggleLogin} className="ui button">Log-in</button>
+        <Button onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
         <Modal open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
           <Modal.Header>Log in to an existing Account</Modal.Header>
           <Modal.Content>
@@ -43,7 +43,7 @@ class LoginButton extends Component {
                 <input defaultValue="" name="password" placeholder='Password' />
               </Form.Field>
               {warning}
-              <Button type='submit'>Register</Button>
+              <Button primary type='submit'>Log-in</Button>
             </Form>
           </Modal.Content>
         </Modal>

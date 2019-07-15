@@ -8,7 +8,7 @@ router.get("/", function(req, res, next) {
     res.send(databaseConnection);
 });
 
-mongoose.connect("mongodb://mongodb:27017/test");
+mongoose.connect("mongodb://mongodb:27017/stocks");
 
 mongoose.connection.on("error", error => {
     console.log("Database connection error:", error);

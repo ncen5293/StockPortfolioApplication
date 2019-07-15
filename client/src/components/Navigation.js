@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Responsive, Menu, Dropdown, Icon } from 'semantic-ui-react';
+import { Responsive, Menu, Dropdown } from 'semantic-ui-react';
 import Searchbar from './Searchbar';
 import SignUpButton from './SignUpButton';
 import LoginButton from './LoginButton';
@@ -12,11 +12,15 @@ class Navigation extends Component {
           Stock Portfolio Application
         </Menu.Item>
         <Menu.Item>
-          <Searchbar />
+          <Searchbar
+            onKeyPress={this.props.onKeyPress}
+            onChange={this.props.onSearchChange}
+            value={this.props.searchInput}
+          />
         </Menu.Item>
         <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
           <Menu.Menu>
-            <Dropdown icon="bars">
+            <Dropdown icon="large bars">
               <Dropdown.Menu direction="left">
                 <Dropdown.Item>
                   <SignUpButton />
