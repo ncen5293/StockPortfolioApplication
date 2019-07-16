@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import LoginButton from './LoginButton';
-import BuyBidButton from './BuyBidButton';
-import BuyAskButton from './BuyAskButton';
+import BuyButton from './BuyButton';
 
 class StockTable extends Component {
   render() {
@@ -24,11 +22,7 @@ class StockTable extends Component {
                 }, {
                   headerName: "Shares", field: "volume"
                 }, {
-                  headerName: "Bid", valueGetter: (params) => params.data.bidSize + ' x ' + params.data.bidPrice
-                }, {
-                  headerName: "Ask", valueGetter: (params) => params.data.askSize + ' x ' + params.data.askPrice
-                }, {
-                  headerName: "Last Sale", valueGetter: (params) => params.data.lastSaleSize + ' x ' + params.data.lastSalePrice
+                  headerName: "Last Sale (volume x price)", valueGetter: (params) => params.data.lastSaleSize + ' x $' + params.data.lastSalePrice
                 }, {
                   headerName: "Last Sale Date",  valueGetter: (params) => {
                     if (params.data.lastSaleTime > 0) {
@@ -39,19 +33,16 @@ class StockTable extends Component {
                     }
                   }
                 }, {
-                  headerName: 'Buy Bid Price', cellRenderer: "bidButton"
-                }, {
-                  headerName: 'Buy Asking Price', cellRenderer: "bidButton"
+                  headerName: '', cellRenderer: "buyButton"
                 }]}
           rowData={this.props.stockData}
           pagination={true}
           paginationAutoPageSize={true}
           frameworkComponents={{
-            bidButton: BuyBidButton,
-            askButton: BuyAskButton
+            buyButton: BuyButton
           }}
-        >
-        </AgGridReact>
+          rowHeight={33}
+        />
       </div>
     );
   }

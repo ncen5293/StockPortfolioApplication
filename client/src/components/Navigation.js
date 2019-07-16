@@ -5,6 +5,25 @@ import SignUpButton from './SignUpButton';
 import LoginButton from './LoginButton';
 
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stockData: [],
+      searchInput: ''
+    }
+  }
+
+  onSearchEnter = (event) => {
+    if (event.key === 'Enter') {
+      console.log(event.target.value);
+      this.setState({searchInput: ''});
+    }
+  }
+
+  onSearchChange = (event) => {
+    this.setState({searchInput: event.target.value});
+  }
+
   render() {
     return (
       <Menu fluid widths={3} inverted color="teal">
@@ -13,9 +32,9 @@ class Navigation extends Component {
         </Menu.Item>
         <Menu.Item>
           <Searchbar
-            onKeyPress={this.props.onKeyPress}
-            onChange={this.props.onSearchChange}
-            value={this.props.searchInput}
+            onKeyPress={this.onSearchEnter}
+            onChange={this.onSearchChange}
+            value={this.state.searchInput}
           />
         </Menu.Item>
         <Responsive {...Responsive.onlyMobile} as={Menu.Item}>

@@ -24,13 +24,13 @@ class LoginButton extends Component {
   render() {
     let warning = <div />;
     if (this.state.loginError) {
-      warning = <div />;
+      warning = <div>Unable to Log-in</div>;
     }
 
     return (
       <div>
         <Button onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
-        <Modal open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
+        <Modal compact size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
           <Modal.Header>Log in to an existing Account</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.loginAccount} >

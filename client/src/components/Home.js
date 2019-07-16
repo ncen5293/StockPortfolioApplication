@@ -7,8 +7,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockData: [],
-      searchInput: ''
+      stockData: []
     }
   }
 
@@ -18,12 +17,16 @@ class Home extends Component {
       url: 'https://api.iextrading.com/1.0/tops'
     })
       .then (res => this.setState({stockData: res.data}))
+
+      axios({
+        method: 'GET',
+        url: 'https://api.iextrading.com/1.0/deep?symbols=amd'
+      })
+        .then (res => console.log(res.data))
   }
 
   componentDidMount = () => {
-    // setInterval(() => {
-      this.getStockData();
-    // }, 1000);
+    this.getStockData();
   }
 
   onSearchEnter = (event) => {
@@ -40,7 +43,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Navigation onKeyPress={this.onSearchEnter} onSearchChange={this.onSearchChange} searchInput={this.state.searchInput}/>
+        <Navigation/>
         <StockTable stockData={this.state.stockData} tableName="Tops 10" />
       </div>
     );
