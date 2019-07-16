@@ -28,7 +28,7 @@ class Navigation extends Component {
     return (
       <Menu fluid widths={3} inverted color="teal">
         <Menu.Item>
-          Stock Portfolio Application
+          <a href="/">Stock Portfolio Application</a>
         </Menu.Item>
         <Menu.Item>
           <Searchbar

@@ -5,6 +5,11 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import BuyButton from './BuyButton';
 
 class StockTable extends Component {
+
+  onFirstDataRendered = (params) => {
+    params.api.sizeColumnsToFit();
+  }
+
   render() {
     console.log(this.props.stockData);
     return (
@@ -42,6 +47,7 @@ class StockTable extends Component {
             buyButton: BuyButton
           }}
           rowHeight={33}
+          onFirstDataRendered={this.onFirstDataRendered.bind(this)}
         />
       </div>
     );
