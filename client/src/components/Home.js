@@ -16,12 +16,6 @@ class Home extends Component {
       url: 'https://api.iextrading.com/1.0/tops'
     })
       .then (res => this.setState({stockData: res.data}))
-
-      // axios({
-      //   method: 'GET',
-      //   url: 'https://api.iextrading.com/1.0/deep?symbols=amd'
-      // })
-      //   .then (res => console.log(res.data))
   }
 
   componentDidMount = () => {

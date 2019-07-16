@@ -21,7 +21,7 @@ class SearchResultModal extends Component {
   }
 
   componentDidUpdate = () => {
-    if (localStorage.hasOwnProperty('searchValue') !== null) {
+    if (localStorage.hasOwnProperty('searchValue')) {
       this.getStockData(localStorage.getItem('searchValue'));
     }
   }

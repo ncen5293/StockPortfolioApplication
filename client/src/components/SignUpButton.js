@@ -20,6 +20,7 @@ class SignUpButton extends Component {
   registerAccount = (event) => {
     console.log(event.target.name.value);
     this.toggleSignUp();
+    localStorage.setItem('isLoggedIn', true)
   }
 
   render() {

@@ -8,7 +8,8 @@ class BuyButton extends Component {
       isBuyOpen: false,
       isWarningOpen: false,
       isConfirmOpen: false,
-      numberOfStocks: 0
+      numberOfStocks: 0,
+      warningMessage: ''
     }
   }
 
@@ -22,10 +23,12 @@ class BuyButton extends Component {
   }
 
   toggleBuyModal = () => {
-    if (this.isBuyable()) {
+    if (this.isBuyable() && localStorage.getItem('isLoggedIn') !== null) {
       this.setState({isBuyOpen: true});
+    } else if (localStorage.getItem('isLoggedIn') !== true) {
+      this.setState({isBuyOpen: false, isWarningOpen: true, warningMessage: 'Log-in before you can buy stocks!'})
     } else {
-      this.setState({isBuyOpen: false, isWarningOpen: true});
+      this.setState({isBuyOpen: false, isWarningOpen: true, warningMessage: 'This stock has no available volume!'});
     }
   }
 
@@ -88,7 +91,7 @@ class BuyButton extends Component {
           <Header icon='ban' content='Unable to buy this stock' />
           <Modal.Content>
             <p>
-              This stock has no available volume!
+              {this.state.warningMessage}
             </p>
           </Modal.Content>
           <Modal.Actions>

@@ -19,6 +19,7 @@ class LoginButton extends Component {
   loginAccount = (event) => {
     console.log(event.target.name.value);
     this.toggleLogin();
+    localStorage.setItem('isLoggedIn', true);
   }
 
   render() {

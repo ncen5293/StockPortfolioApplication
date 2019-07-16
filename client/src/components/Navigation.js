@@ -32,9 +32,59 @@ class Navigation extends Component {
 
   closeSearchModal = () => {
     this.setState({isSearchOpen: false});
+    localStorage.removeItem('searchValue');
   }
 
   render() {
+    let mobileNavButtons = <div />;
+    let navButtons = <div />;
+    if (localStorage.getItem('isLoggedIn')) {
+      mobileNavButtons = (
+        <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
+          <Menu.Menu>
+            <Dropdown icon="large bars">
+              <Dropdown.Menu direction="left">
+                <Dropdown.Item>
+                  <button />
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <button />
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Menu>
+        </Responsive>
+      );
+      navButtons = (
+        <Responsive as={Menu.Item} minWidth={Responsive.onlyTablet.minWidth}>
+          <button />
+          <button />
+        </Responsive>
+      );
+    } else {
+      mobileNavButtons = (
+        <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
+          <Menu.Menu>
+            <Dropdown icon="large bars">
+              <Dropdown.Menu direction="left">
+                <Dropdown.Item>
+                  <SignUpButton />
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <LoginButton />
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Menu>
+        </Responsive>
+      );
+      navButtons = (
+        <Responsive as={Menu.Item} minWidth={Responsive.onlyTablet.minWidth}>
+          <SignUpButton />
+          <LoginButton />
+        </Responsive>
+      );
+    }
     return (
       <div>
         <Menu fluid widths={3} inverted color="teal">
@@ -48,24 +98,8 @@ class Navigation extends Component {
               value={this.state.searchInput}
             />
           </Menu.Item>
-          <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
-            <Menu.Menu>
-              <Dropdown icon="large bars">
-                <Dropdown.Menu direction="left">
-                  <Dropdown.Item>
-                    <SignUpButton />
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <LoginButton />
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Menu.Menu>
-          </Responsive>
-          <Responsive as={Menu.Item} minWidth={Responsive.onlyTablet.minWidth}>
-            <SignUpButton />
-            <LoginButton />
-          </Responsive>
+          {mobileNavButtons}
+          {navButtons}
         </Menu>
         <SearchResultModal
           isSearchOpen={this.state.isSearchOpen}

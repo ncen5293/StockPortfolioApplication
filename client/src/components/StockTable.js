@@ -24,7 +24,7 @@ class StockTable extends Component {
           columnDefs={[{
                   headerName: "Stock Symbol", field: "symbol"
                 }, {
-                  headerName: "Market %", field: "marketPercent"
+                  headerName: "Market %", valueGetter: (params) => (params.data.marketPercent * 100).toFixed(2) + '%'
                 }, {
                   headerName: "Shares", field: "volume"
                 }, {

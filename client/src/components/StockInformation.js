@@ -26,7 +26,7 @@ class StockInformation extends Component {
         <Table.Body>
           <Table.Row>
             <Table.Cell singleLine>
-              {stockData.marketPercent}%
+              {stockData.marketPercent.toFixed(2)}%
             </Table.Cell>
             <Table.Cell singleLine>
               {stockData.volume}
