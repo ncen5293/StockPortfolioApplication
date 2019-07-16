@@ -37,3 +37,7 @@
   top: 25%;
   margin-left: 5px;
 }
+
+.navLogo:hover {
+  cursor: pointer;
+}

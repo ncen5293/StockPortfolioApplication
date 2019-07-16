@@ -19,6 +19,7 @@ class StockTable extends Component {
         height: '80vh',
         width: '100%' }}
       >
+        <h1>{this.props.tableName}</h1>
         <AgGridReact
           columnDefs={[{
                   headerName: "Stock Symbol", field: "symbol"
