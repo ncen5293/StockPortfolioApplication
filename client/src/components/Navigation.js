@@ -3,6 +3,8 @@ import { Responsive, Menu, Dropdown } from 'semantic-ui-react';
 import Searchbar from './Searchbar';
 import SignUpButton from './SignUpButton';
 import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
+import PortfolioButton from './PortfolioButton';
 import SearchResultModal from './SearchResultModal';
 
 class Navigation extends Component {
@@ -38,17 +40,17 @@ class Navigation extends Component {
   render() {
     let mobileNavButtons = <div />;
     let navButtons = <div />;
-    if (localStorage.getItem('isLoggedIn')) {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
       mobileNavButtons = (
         <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
           <Menu.Menu>
             <Dropdown icon="large bars">
               <Dropdown.Menu direction="left">
                 <Dropdown.Item>
-                  <button />
+                  <PortfolioButton />
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <button />
+                  <LogoutButton />
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -57,8 +59,8 @@ class Navigation extends Component {
       );
       navButtons = (
         <Responsive as={Menu.Item} minWidth={Responsive.onlyTablet.minWidth}>
-          <button />
-          <button />
+          <PortfolioButton />
+          <LogoutButton />
         </Responsive>
       );
     } else {

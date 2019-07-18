@@ -18,8 +18,8 @@ class LoginButton extends Component {
 
   loginAccount = (event) => {
     console.log(event.target.name.value);
-    this.toggleLogin();
     localStorage.setItem('isLoggedIn', true);
+    window.location.reload();
   }
 
   render() {
@@ -31,7 +31,7 @@ class LoginButton extends Component {
     return (
       <div>
         <Button onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
-        <Modal compact size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
+        <Modal size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
           <Modal.Header>Log in to an existing Account</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.loginAccount} >

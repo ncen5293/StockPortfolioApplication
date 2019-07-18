@@ -21,6 +21,7 @@ class SignUpButton extends Component {
     console.log(event.target.name.value);
     this.toggleSignUp();
     localStorage.setItem('isLoggedIn', true)
+    window.location.reload();
   }
 
   render() {

@@ -23,9 +23,9 @@ class BuyButton extends Component {
   }
 
   toggleBuyModal = () => {
-    if (this.isBuyable() && localStorage.getItem('isLoggedIn') !== null) {
+    if (this.isBuyable() && localStorage.getItem('isLoggedIn') === 'true') {
       this.setState({isBuyOpen: true});
-    } else if (localStorage.getItem('isLoggedIn') !== true) {
+    } else if (localStorage.getItem('isLoggedIn') !== 'true') {
       this.setState({isBuyOpen: false, isWarningOpen: true, warningMessage: 'Log-in before you can buy stocks!'})
     } else {
       this.setState({isBuyOpen: false, isWarningOpen: true, warningMessage: 'This stock has no available volume!'});
