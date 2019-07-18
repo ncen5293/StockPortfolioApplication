@@ -18,13 +18,17 @@ class PortfolioPage extends Component {
   }
 
   componentDidMount = () => {
-    this.getUserStocks();
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      this.getUserStocks();
+    } else {
+      window.location.replace('/');
+    }
   }
 
   render() {
     return (
       <div>
-
+        <h1>Your Portfolio</h1>
       </div>
     );
   }

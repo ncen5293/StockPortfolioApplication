@@ -20,7 +20,9 @@ class SignUpButton extends Component {
   registerAccount = (event) => {
     console.log(event.target.name.value);
     this.toggleSignUp();
-    localStorage.setItem('isLoggedIn', true)
+    localStorage.setItem('isLoggedIn', true);
+    localStorage.setItem('name', event.target.name.value);
+    localStorage.setItem('email', event.target.email.value);
     window.location.reload();
   }
 
@@ -36,32 +38,61 @@ class SignUpButton extends Component {
       warning = <div />;
     }
 
-    return (
-      <div>
-        <Button onClick={this.toggleSignUp} icon='plus' labelPosition='left' content="Sign-Up"/>
-        <Modal compact size="mini" open={this.state.isSignUpOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSignUp} >
-          <Modal.Header>Create a new Account</Modal.Header>
-          <Modal.Content>
-            <Form onSubmit={this.registerAccount} >
-              <Form.Field>
-                <label>Full Name</label>
-                <input defaultValue="" name="name" placeholder='John Doe' />
-              </Form.Field>
-              <Form.Field>
-                <label>E-mail</label>
-                <input defaultValue="" name="email" placeholder='example@mail.com' />
-              </Form.Field>
-              <Form.Field>
-                <label>Password</label>
-                <input defaultValue="" name="password" placeholder='Password' />
-              </Form.Field>
-              {warning}
-              <Button primary type='submit'>Register</Button>
-            </Form>
-          </Modal.Content>
-        </Modal>
-      </div>
-    );
+    if (this.props.isFluid) {
+      return (
+        <div>
+          <Button fluid onClick={this.toggleSignUp} icon='plus' labelPosition='left' content="Sign-Up"/>
+          <Modal compact size="mini" open={this.state.isSignUpOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSignUp} >
+            <Modal.Header>Create a new Account</Modal.Header>
+            <Modal.Content>
+              <Form onSubmit={this.registerAccount} >
+                <Form.Field>
+                  <label>Full Name</label>
+                  <input defaultValue="" name="name" placeholder='John Doe' />
+                </Form.Field>
+                <Form.Field>
+                  <label>E-mail</label>
+                  <input defaultValue="" name="email" placeholder='example@mail.com' />
+                </Form.Field>
+                <Form.Field>
+                  <label>Password</label>
+                  <input defaultValue="" name="password" placeholder='Password' />
+                </Form.Field>
+                {warning}
+                <Button primary type='submit'>Register</Button>
+              </Form>
+            </Modal.Content>
+          </Modal>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Button onClick={this.toggleSignUp} icon='plus' labelPosition='left' content="Sign-Up"/>
+          <Modal compact size="mini" open={this.state.isSignUpOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSignUp} >
+            <Modal.Header>Create a new Account</Modal.Header>
+            <Modal.Content>
+              <Form onSubmit={this.registerAccount} >
+                <Form.Field>
+                  <label>Full Name</label>
+                  <input defaultValue="" name="name" placeholder='John Doe' />
+                </Form.Field>
+                <Form.Field>
+                  <label>E-mail</label>
+                  <input defaultValue="" name="email" placeholder='example@mail.com' />
+                </Form.Field>
+                <Form.Field>
+                  <label>Password</label>
+                  <input defaultValue="" name="password" placeholder='Password' />
+                </Form.Field>
+                {warning}
+                <Button primary type='submit'>Register</Button>
+              </Form>
+            </Modal.Content>
+          </Modal>
+        </div>
+      );
+    }
   }
 }
 

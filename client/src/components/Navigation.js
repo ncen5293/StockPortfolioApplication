@@ -40,17 +40,19 @@ class Navigation extends Component {
   render() {
     let mobileNavButtons = <div />;
     let navButtons = <div />;
+    let greeting = 'Stock Portfolio Application';
     if (localStorage.getItem('isLoggedIn') === 'true') {
+      greeting = `Hi ${localStorage.getItem('name')}, Welcome to your Stock Portfolio`;
       mobileNavButtons = (
         <Responsive {...Responsive.onlyMobile} as={Menu.Item}>
           <Menu.Menu>
             <Dropdown icon="large bars">
               <Dropdown.Menu direction="left">
                 <Dropdown.Item>
-                  <PortfolioButton />
+                  <PortfolioButton isFluid={true} />
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <LogoutButton />
+                  <LogoutButton isFluid={true} />
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -70,10 +72,10 @@ class Navigation extends Component {
             <Dropdown icon="large bars">
               <Dropdown.Menu direction="left">
                 <Dropdown.Item>
-                  <SignUpButton />
+                  <SignUpButton isFluid={true} />
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <LoginButton />
+                  <LoginButton isFluid={true} />
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -91,7 +93,7 @@ class Navigation extends Component {
       <div>
         <Menu fluid widths={3} inverted color="teal">
           <Menu.Item>
-            <Menu.Header className="navLogo" onClick={this.goHome} >Stock Portfolio Application</Menu.Header>
+            <Menu.Header className="navLogo" onClick={this.goHome} >{greeting}</Menu.Header>
           </Menu.Item>
           <Menu.Item>
             <Searchbar

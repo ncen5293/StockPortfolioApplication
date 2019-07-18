@@ -7,11 +7,19 @@ class PortfolioButton extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Button onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="My Portfolio"/>
-      </div>
-    );
+    if (this.props.isFluid) {
+      return (
+        <div>
+          <Button fluid onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="My Portfolio"/>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Button onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="My Portfolio"/>
+        </div>
+      );
+    }
   }
 }
 
