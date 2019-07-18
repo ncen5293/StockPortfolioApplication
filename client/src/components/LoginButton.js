@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form  } from 'semantic-ui-react';
+import { Button, Modal, Form, Message  } from 'semantic-ui-react';
+import axios from 'axios';
 
 class LoginButton extends Component {
   constructor(props) {
@@ -14,20 +15,37 @@ class LoginButton extends Component {
     this.setState((state) => {
       return {isLoginOpen: !state.isLoginOpen};
     });
+    this.setState({loginError: false});
   }
 
   loginAccount = (event) => {
-    console.log(event.target.name.value);
-    localStorage.setItem('isLoggedIn', true);
-    localStorage.setItem('name', event.target.name.value);
-    localStorage.setItem('email', event.target.email.value);
-    window.location.reload();
+    const loginInfo = {
+      email: event.target.email.value,
+      password: event.target.password.value
+    }
+    axios.post("http://localhost:8080/stockapi/getUser", loginInfo)
+      .then(res => {
+        if (res.data.correctInfo) {
+          localStorage.setItem('isLoggedIn', true);
+          localStorage.setItem('name', res.data.portfolio.Name);
+          localStorage.setItem('email', res.data.portfolio.Email);
+          window.location.reload();
+        } else {
+          this.setState({loginError: true});
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   render() {
     let warning = <div />;
     if (this.state.loginError) {
-      warning = <div>Unable to Log-in</div>;
+      warning = <Message negative>
+                  <Message.Header>Unable to Log-in!</Message.Header>
+                    <p>You have entered the wrong information</p>
+                </Message>;
     }
 
     if (this.props.isFluid) {
@@ -38,6 +56,7 @@ class LoginButton extends Component {
             <Modal.Header>Log in to an existing Account</Modal.Header>
             <Modal.Content>
               <Form onSubmit={this.loginAccount} >
+                {warning}
                 <Form.Field>
                   <label>E-mail</label>
                   <input defaultValue="" name="email" placeholder='example@mail.com' />
@@ -46,7 +65,6 @@ class LoginButton extends Component {
                   <label>Password</label>
                   <input defaultValue="" name="password" placeholder='Password' />
                 </Form.Field>
-                {warning}
                 <Button primary type='submit'>Log-in</Button>
               </Form>
             </Modal.Content>
@@ -61,6 +79,7 @@ class LoginButton extends Component {
             <Modal.Header>Log in to an existing Account</Modal.Header>
             <Modal.Content>
               <Form onSubmit={this.loginAccount} >
+                {warning}
                 <Form.Field>
                   <label>E-mail</label>
                   <input defaultValue="" name="email" placeholder='example@mail.com' />
@@ -69,7 +88,6 @@ class LoginButton extends Component {
                   <label>Password</label>
                   <input defaultValue="" name="password" placeholder='Password' />
                 </Form.Field>
-                {warning}
                 <Button primary type='submit'>Log-in</Button>
               </Form>
             </Modal.Content>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 
-class StockInformation extends Component {
+class SearchInformation extends Component {
   render() {
     let stockData = this.props.data;
     if (stockData.lastSaleTime > 0) {
@@ -47,4 +47,4 @@ class StockInformation extends Component {
   }
 }
 
-export default StockInformation;
+export default SearchInformation;

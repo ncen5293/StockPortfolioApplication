@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Responsive, Menu, Dropdown } from 'semantic-ui-react';
+import axios from 'axios';
 import Searchbar from './Searchbar';
 import SignUpButton from './SignUpButton';
 import LoginButton from './LoginButton';
@@ -11,7 +12,7 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockData: [],
+      stockData: {},
       searchInput: '',
       isSearchOpen: false
     }
@@ -19,8 +20,12 @@ class Navigation extends Component {
 
   onSearchEnter = (event) => {
     if (event.key === 'Enter') {
-      localStorage.setItem('searchValue', this.state.searchInput);
-      this.setState({searchInput: '', isSearchOpen: true});
+      let searchValue = this.state.searchInput;
+      axios({
+        method: 'GET',
+        url: `https://api.iextrading.com/1.0/deep?symbols=${searchValue}`
+      })
+        .then (res => this.setState({stockData: res.data, searchInput: '', isSearchOpen: true}))
     }
   }
 
@@ -108,6 +113,7 @@ class Navigation extends Component {
         <SearchResultModal
           isSearchOpen={this.state.isSearchOpen}
           closeSearchModal={this.closeSearchModal}
+          stockData={this.state.stockData}
         />
       </div>
     );

@@ -19,21 +19,32 @@ const UserPortfolioSchema = new Schema({
   _id: ObjectId,
   Name: String,
   Email: String,
+  Password: String,
   Stocks: [{ symbol: String, volume: Number, buyPrice: Number }],
   Balance: Number
 });
 
-const UserPortfolioModel = mongoose.model('passenger', UserPortfolioSchema);
+const UserPortfolioModel = mongoose.model('user', UserPortfolioSchema);
 
 router.post("/getUser", (req,res) => {
   console.log(req.body);
-  UserPortfolioModel.find({ "Name": req.body.Name },
+  let correctInfo = true;
+  const loginInfo = req.body;
+  UserPortfolioModel.findOne({ "Email": loginInfo.email },
     (err, portfolio) => {
       if (err) {
         return handleError(err);
       }
       console.log(portfolio);
-      res.status(201).json({ error: null, portfolio });
+      if (portfolio && portfolio.Password === loginInfo.password) {
+        console.log('logged in');
+        res.status(201).json({ error: null, portfolio, correctInfo });
+      } else {
+        console.log('wrong info');
+        correctInfo = false;
+        res.status(201).json({ error: null, portfolio, correctInfo });
+      }
+
   });
 })
 
@@ -41,7 +52,7 @@ router.post("/setUser", (req, res) => {
   console.log(req.body);
   let newUser = req.body;
   let emailInUse = false;
-  PassengerModel.findOne({'Email': newUser.Email},
+  UserPortfolioModel.findOne({'Email': newUser.Email},
     (err, user) => {
       if (err) {
         return handleError(err);
@@ -54,7 +65,7 @@ router.post("/setUser", (req, res) => {
             return handleError(err);
           }
         })
-        res.status(201).json({ error: null, emailInUse });
+        res.status(201).json({ error: null, emailInUse, newUser });
       } else {
         emailInUse = true;
         res.status(201).json({ error: null, emailInUse });
