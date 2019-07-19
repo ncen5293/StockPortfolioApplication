@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Header, Icon } from 'semantic-ui-react';
+import axios from 'axios';
 
 class BuyButton extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class BuyButton extends Component {
     this.setState({isWarningOpen: false});
   }
 
-  buyStocks = (event) => {
+  attemptBuyStocks = (event) => {
     this.setState({isConfirmOpen: true, numberOfStocks: event.target.amount.value});
   }
 
@@ -49,7 +50,23 @@ class BuyButton extends Component {
   }
 
   confirmBuyStocks = (event) => {
+    this.buyStocks();
     this.setState({isConfirmOpen: false, isBuyOpen: false});
+  }
+
+  buyStocks = () => {
+    const stockInfo = {
+      volume: this.state.numberOfStocks,
+      symbol: this.props.data.symbol,
+      buyPrice: this.props.data.lastSalePrice
+    }
+    axios.put("http://localhost:8080/stockapi/updatePortfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   render() {
@@ -59,7 +76,7 @@ class BuyButton extends Component {
         <Modal size="mini" open={this.state.isBuyOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.closeBuyModal} >
           <Modal.Header>Buy {this.props.data.symbol} Stocks </Modal.Header>
           <Modal.Content>
-            <Form onSubmit={this.buyStocks} >
+            <Form onSubmit={this.attemptBuyStocks} >
               <Form.Field>
                 <label>Stock Amount</label>
                 <input defaultValue={1} min="1" max={this.props.data.volume} type="number" name="amount" placeholder='0' style={{'width':'65%'}} />

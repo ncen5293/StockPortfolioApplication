@@ -23,7 +23,7 @@ class LoginButton extends Component {
       email: event.target.email.value,
       password: event.target.password.value
     }
-    axios.post("http://localhost:8080/stockapi/getUser", loginInfo)
+    axios.get("http://localhost:8080/stockapi/getUser", {params: { email:loginInfo.email, password:loginInfo.password }})
       .then(res => {
         if (res.data.correctInfo) {
           localStorage.setItem('isLoggedIn', true);

@@ -18,18 +18,55 @@ const ObjectId = Schema.ObjectId;
 const UserPortfolioSchema = new Schema({
   _id: ObjectId,
   Name: String,
-  Email: String,
+  Email: {type: String, unique: true},
   Password: String,
-  Stocks: [{ symbol: String, volume: Number, buyPrice: Number }],
+  Stocks: [{ symbol: String, volume: Number, buyPrice: Number, buyDate: Number }],
   Balance: Number
 });
 
 const UserPortfolioModel = mongoose.model('user', UserPortfolioSchema);
 
-router.post("/getUser", (req,res) => {
+router.put("/updatePortfolio", (req,res) => {
   console.log(req.body);
+  UserPortfolioModel.findOne({ "Email": req.body.email },
+    (err, portfolio) => {
+      if (err) {
+        return handleError(err);
+      }
+      let updatedStocks = portfolio.Stocks;
+      let updatedBalance = portfolio.Balance;
+      let stockInfo = req.body.stockInfo;
+      let buyDate = new Date();
+      stockInfo.buyDate = buyDate.getTime();
+      updatedStocks.push(req.body.stockInfo);
+      updatedBalance -= (req.body.stockInfo.buyPrice * req.body.stockInfo.volume);
+      if (portfolio.Balance > 0) {
+        UserPortfolioModel.findOneAndUpdate(
+          { "Email": req.body.email },
+          {
+            "Stocks": updatedStocks,
+            "Balance": updatedBalance
+          },
+          { new: true },
+          (err, updatedPortfolio) => {
+            if (err) {
+              throw err;
+            } else {
+              console.log("Updated");
+              res.send({updatedPortfolio, hasEnoughMoney: true});
+            }
+          }
+        );
+      } else {
+        res.send({portfolio, hasEnoughMoney: false});
+      }
+  });
+})
+
+router.get("/getUser", (req,res) => {
+  console.log(req.query);
   let correctInfo = true;
-  const loginInfo = req.body;
+  const loginInfo = {email: req.query.email, password: req.query.password};
   UserPortfolioModel.findOne({ "Email": loginInfo.email },
     (err, portfolio) => {
       if (err) {
