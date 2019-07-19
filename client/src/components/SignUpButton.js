@@ -20,27 +20,32 @@ class SignUpButton extends Component {
 
   registerAccount = (event) => {
     console.log(event.target.name.value);
-    const newUser = {
-      Name: event.target.name.value,
-      Email: event.target.email.value,
-      Password: event.target.password.value,
-      Stocks: [],
-      Balance: 5000
+    if (event.target.password.value.length > 4) {
+      const newUser = {
+        Name: event.target.name.value,
+        Email: event.target.email.value,
+        Password: event.target.password.value,
+        Stocks: [],
+        Balance: 5000
+      }
+      axios.post("http://localhost:8080/stockapi/setUser", newUser)
+        .then(res => {
+          if (!res.data.emailInUse) {
+            localStorage.setItem('isLoggedIn', true);
+            localStorage.setItem('name', res.data.newUser.Name);
+            localStorage.setItem('email', res.data.newUser.Email);
+            localStorage.setItem('balance', res.data.portfolio.Balance);
+            window.location.reload();
+          } else {
+            this.setState({existingEmail: true});
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    } else {
+      this.setState({badPassword: true});
     }
-    axios.post("http://localhost:8080/stockapi/setUser", newUser)
-      .then(res => {
-        if (!res.data.emailInUse) {
-          localStorage.setItem('isLoggedIn', true);
-          localStorage.setItem('name', res.data.newUser.Name);
-          localStorage.setItem('email', res.data.newUser.Email);
-          window.location.reload();
-        } else {
-          this.setState({existingEmail: true});
-        }
-      })
-      .catch(error => {
-        console.error(error)
-      })
   }
 
   render() {

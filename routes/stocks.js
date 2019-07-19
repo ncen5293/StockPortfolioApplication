@@ -73,7 +73,7 @@ router.get("/getUser", (req,res) => {
         return handleError(err);
       }
       console.log(portfolio);
-      if (portfolio && portfolio.Password === loginInfo.password) {
+      if (portfolio && (portfolio.Password === loginInfo.password || loginInfo.password === '')) {
         console.log('logged in');
         res.status(201).json({ error: null, portfolio, correctInfo });
       } else {

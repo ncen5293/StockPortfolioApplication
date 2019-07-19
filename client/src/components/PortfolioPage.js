@@ -10,11 +10,18 @@ class PortfolioPage extends Component {
   }
 
   getUserStocks = () => {
-    axios({
-      method: 'GET',
-      url: 'https://api.iextrading.com/1.0/tops'
-    })
-      .then (res => this.setState({stockData: res.data}))
+    axios.get("http://localhost:8080/stockapi/getUser", {params: { email: localStorage.getItem('email'), password: '' }})
+      .then(res => {
+        if (res.data.correctInfo) {
+          console.log(res.data.portfolio.Stocks);
+          this.setState({ stockData: res.data.portfolio.Stocks});
+        } else {
+          this.setState({loginError: true});
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   componentDidMount = () => {
@@ -28,7 +35,7 @@ class PortfolioPage extends Component {
   render() {
     return (
       <div>
-        <h1>Your Portfolio</h1>
+        <h1>{`Portfolio Page - Available Balance: $${localStorage.getItem('balance')}`}</h1>
       </div>
     );
   }

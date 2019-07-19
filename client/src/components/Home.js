@@ -23,11 +23,19 @@ class Home extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <StockTable stockData={this.state.stockData} tableName="Tops" />
-      </div>
-    );
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      return (
+        <div>
+          <StockTable stockData={this.state.stockData} tableName={`Tops - Available Balance: $${localStorage.getItem('balance')}`} />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <StockTable stockData={this.state.stockData} tableName="Tops" />
+        </div>
+      );
+    }
   }
 }
 

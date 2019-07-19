@@ -29,6 +29,7 @@ class LoginButton extends Component {
           localStorage.setItem('isLoggedIn', true);
           localStorage.setItem('name', res.data.portfolio.Name);
           localStorage.setItem('email', res.data.portfolio.Email);
+          localStorage.setItem('balance', res.data.portfolio.Balance);
           window.location.reload();
         } else {
           this.setState({loginError: true});
