@@ -12,50 +12,51 @@ class PortfolioInformation extends Component {
     }
   }
 
-  getCurrentStockPrice = (symbol) => {
+  getCurrentStockPrice = (stock, i) => {
     let currentPrice = 'N/A';
     axios({
       method: 'GET',
-      url: `https://api.iextrading.com/1.0/deep?symbols=${symbol}`
+      url: `https://api.iextrading.com/1.0/deep?symbols=${stock.symobl}`
     })
       .then (res => {
+        let buyDate = new Date(stock.buyDate);
+        buyDate = buyDate.toUTCString();
+        let stockInfo = ( <Table.Body key={i} >
+                            <Table.Row>
+                              <Table.Cell singleLine>
+                                {stock.symbol}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                ${stock.buyPrice.toFixed(2)}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                {stock.volume}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                ${(stock.volume * stock.buyPrice).toFixed(2)}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                {buyDate}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                {res.data.lastSalePrice}
+                              </Table.Cell>
+                              <Table.Cell singleLine>
+                                <SellButton stockInfo={stock} />
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>);
         this.setState((state) => {
-          const currentStockPrices = state.currentStockPrices.concat(res.data.lastSalePrice);
-          console.log(currentStockPrices)
-          return { currentStockPrices };
+          const stockRows = state.stockRows.concat(stockInfo);
+          return { stockRows };
         });
       })
   }
 
   componentDidMount = () => {
-    const stockRows = this.props.stockData.map((stock, i) => {
-      let buyDate = new Date(stock.buyDate);
-      buyDate = buyDate.toUTCString();
-      this.getCurrentStockPrice(stock.symbol);
-      return (<Table.Body key={i}>
-                <Table.Row>
-                  <Table.Cell singleLine>
-                    {stock.symbol}
-                  </Table.Cell>
-                  <Table.Cell singleLine>
-                    ${stock.buyPrice.toFixed(2)}
-                  </Table.Cell>
-                  <Table.Cell singleLine>
-                    {stock.volume}
-                  </Table.Cell>
-                  <Table.Cell singleLine>
-                    ${(stock.volume * stock.buyPrice).toFixed(2)}
-                  </Table.Cell>
-                  <Table.Cell singleLine>
-                    {buyDate}
-                  </Table.Cell>
-                  <Table.Cell singleLine>
-                    {this.state.currentStockPrices[i]}
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>);
-    });
-    this.setState({ stockRows });
+    for (let i=0; i<this.props.stockData.length; i++) {
+      this.getCurrentStockPrice(this.props.stockData[i], i);
+    }
   }
 
   render() {
