@@ -21,6 +21,7 @@ const UserPortfolioSchema = new Schema({
   Email: {type: String, unique: true},
   Password: String,
   Stocks: [{ symbol: String, volume: Number, buyPrice: Number, buyDate: Number }],
+  SoldStocks: [{ symbol: String, volume: Number, buyPrice: Number, buyDate: Number }],
   Balance: Number
 });
 
@@ -60,6 +61,47 @@ router.put("/updatePortfolio", (req,res) => {
       } else {
         res.send({portfolio, hasEnoughMoney: false});
       }
+  });
+})
+
+router.put("/sellStocks", (req,res) => {
+  console.log(req.body);
+  UserPortfolioModel.findOne({ "Email": req.body.email },
+    (err, portfolio) => {
+      if (err) {
+        return handleError(err);
+      }
+      let updatedStocks = portfolio.Stocks;
+      let updatedBalance = portfolio.Balance;
+      let stockInfo = req.body.stockInfo;
+      let buyDate = new Date();
+      let soldStock = {
+        symbol: stockInfo,
+        volume: stockInfo.volume,
+        sellPrice: stockInfo.buyPrice,
+        sellDate: buyDate.getTime()
+      }
+      let soldIndex = updatedStocks.indexOf(stockInfo);
+      updatedStocks = updatedStocks.splice(soldIndex, 1);
+      updatedBalance += (stockInfo.buyPrice * stockInfo.volume);
+      res.send({updatedStocks, updatedBalance})
+      // UserPortfolioModel.findOneAndUpdate(
+      //   { "Email": req.body.email },
+      //   {
+      //     "Stocks": updatedStocks,
+      //     "SoldStocks": soldStock,
+      //     "Balance": updatedBalance
+      //   },
+      //   { new: true },
+      //   (err, updatedPortfolio) => {
+      //     if (err) {
+      //       throw err;
+      //     } else {
+      //       console.log("Updated");
+      //       res.send({updatedPortfolio, hasEnoughMoney: true});
+      //     }
+      //   }
+      // );
   });
 })
 

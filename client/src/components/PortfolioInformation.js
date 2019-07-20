@@ -13,10 +13,9 @@ class PortfolioInformation extends Component {
   }
 
   getCurrentStockPrice = (stock, i) => {
-    let currentPrice = 'N/A';
     axios({
       method: 'GET',
-      url: `https://api.iextrading.com/1.0/deep?symbols=${stock.symobl}`
+      url: `https://api.iextrading.com/1.0/tops/last?symbols=${stock.symbol}`
     })
       .then (res => {
         let buyDate = new Date(stock.buyDate);
@@ -39,7 +38,7 @@ class PortfolioInformation extends Component {
                                 {buyDate}
                               </Table.Cell>
                               <Table.Cell singleLine>
-                                {res.data.lastSalePrice}
+                                ${res.data[0].price.toFixed(2)}
                               </Table.Cell>
                               <Table.Cell singleLine>
                                 <SellButton stockInfo={stock} />
@@ -67,7 +66,7 @@ class PortfolioInformation extends Component {
             <Table.HeaderCell singleLine>Stock Symbol</Table.HeaderCell>
             <Table.HeaderCell singleLine>Buy Price</Table.HeaderCell>
             <Table.HeaderCell singleLine>Volume</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Total Buy Price</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Total Spent</Table.HeaderCell>
             <Table.HeaderCell singleLine>Buy Date</Table.HeaderCell>
             <Table.HeaderCell singleLine>Today's Open Price</Table.HeaderCell>
             <Table.HeaderCell singleLine />
