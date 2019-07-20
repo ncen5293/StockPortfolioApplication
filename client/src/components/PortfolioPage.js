@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PortfolioInformation from './PortfolioInformation';
 
 class PortfolioPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockData: []
+      stockData: [],
+      gotStockInfo: false
     }
   }
 
@@ -14,7 +16,7 @@ class PortfolioPage extends Component {
       .then(res => {
         if (res.data.correctInfo) {
           console.log(res.data.portfolio.Stocks);
-          this.setState({ stockData: res.data.portfolio.Stocks});
+          this.setState({ stockData: res.data.portfolio.Stocks, gotStockInfo: true });
         } else {
           this.setState({loginError: true});
         }
@@ -33,11 +35,21 @@ class PortfolioPage extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>{`Portfolio Page - Available Balance: $${localStorage.getItem('balance')}`}</h1>
-      </div>
-    );
+    if (this.state.gotStockInfo) {
+      return (
+        <div>
+          <h1>{`Transactions - Available Balance: $${localStorage.getItem('balance')}`}</h1>
+          <PortfolioInformation stockData={this.state.stockData} />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h1>{`Transactions - Available Balance: $${localStorage.getItem('balance')}`}</h1>
+        </div>
+      );
+    }
+
   }
 }
 

@@ -10,13 +10,13 @@ class PortfolioButton extends Component {
     if (this.props.isFluid) {
       return (
         <div>
-          <Button fluid onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="My Portfolio"/>
+          <Button fluid onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="Transactions"/>
         </div>
       );
     } else {
       return (
         <div>
-          <Button onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="My Portfolio"/>
+          <Button onClick={this.goToPortfolio} icon='id card' labelPosition='left' content="Transactions"/>
         </div>
       );
     }

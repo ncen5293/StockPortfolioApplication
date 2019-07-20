@@ -15,7 +15,10 @@ class Home extends Component {
       method: 'GET',
       url: 'https://api.iextrading.com/1.0/tops'
     })
-      .then (res => this.setState({stockData: res.data}))
+      .then (res => {
+        console.log('got iex stock info')
+        this.setState({stockData: res.data})
+      })
   }
 
   componentDidMount = () => {
