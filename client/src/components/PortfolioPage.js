@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Tab } from 'semantic-ui-react';
 import PortfolioInformation from './PortfolioInformation';
 
 class PortfolioPage extends Component {
@@ -37,15 +38,17 @@ class PortfolioPage extends Component {
   render() {
     if (this.state.gotStockInfo) {
       return (
-        <div>
-          <h1>{`Transactions - Available Balance: $${localStorage.getItem('balance')}`}</h1>
-          <PortfolioInformation stockData={this.state.stockData} />
-        </div>
+        <Tab panes={[
+          { menuItem: 'Bought Stocks', render: () => <Tab.Pane><PortfolioInformation type="Buy" stockData={this.state.stockData} /></Tab.Pane> },
+          { menuItem: 'Sold Stocks', render: () => <Tab.Pane><PortfolioInformation type="Sell" stockData={this.state.stockData} /></Tab.Pane> },
+          { menuItem: 'All Trades', render: () => <Tab.Pane><PortfolioInformation type="Transaction" stockData={this.state.stockData} /></Tab.Pane> }
+        ]}
+        />
       );
     } else {
       return (
         <div>
-          <h1>{`Transactions - Available Balance: $${localStorage.getItem('balance')}`}</h1>
+          <h1>{`Available Balance: $${localStorage.getItem('balance')}`}</h1>
         </div>
       );
     }

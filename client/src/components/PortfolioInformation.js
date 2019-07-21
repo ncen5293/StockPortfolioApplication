@@ -64,10 +64,10 @@ class PortfolioInformation extends Component {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell singleLine>Stock Symbol</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Buy Price</Table.HeaderCell>
+            <Table.HeaderCell singleLine>{`${this.props.type} Price`}</Table.HeaderCell>
             <Table.HeaderCell singleLine>Volume</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Total Spent</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Buy Date</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Total</Table.HeaderCell>
+            <Table.HeaderCell singleLine>{`${this.props.type} Date`}</Table.HeaderCell>
             <Table.HeaderCell singleLine>Today's Open Price</Table.HeaderCell>
             <Table.HeaderCell singleLine />
           </Table.Row>
