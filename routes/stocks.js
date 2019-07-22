@@ -20,8 +20,9 @@ const UserPortfolioSchema = new Schema({
   Name: String,
   Email: {type: String, unique: true},
   Password: String,
-  Stocks: [{ symbol: String, volume: Number, buyPrice: Number, buyDate: Number }],
-  SoldStocks: [{ symbol: String, volume: Number, buyPrice: Number, buyDate: Number }],
+  Stocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
+  SoldStocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
+  Allstocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
   Balance: Number
 });
 
@@ -37,10 +38,10 @@ router.put("/updatePortfolio", (req,res) => {
       let updatedStocks = portfolio.Stocks;
       let updatedBalance = portfolio.Balance;
       let stockInfo = req.body.stockInfo;
-      let buyDate = new Date();
-      stockInfo.buyDate = buyDate.getTime();
+      let date = new Date();
+      stockInfo.date = date.getTime();
       updatedStocks.push(req.body.stockInfo);
-      updatedBalance -= (req.body.stockInfo.buyPrice * req.body.stockInfo.volume);
+      updatedBalance -= (req.body.stockInfo.price * req.body.stockInfo.volume);
       if (portfolio.Balance > 0) {
         UserPortfolioModel.findOneAndUpdate(
           { "Email": req.body.email },
@@ -71,37 +72,47 @@ router.put("/sellStocks", (req,res) => {
       if (err) {
         return handleError(err);
       }
-      let updatedStocks = portfolio.Stocks;
+      let stocks = portfolio.Stocks;
+      let updatedStocks = [];
+      let updatedSoldStocks = portfolio.SoldStocks;
       let updatedBalance = portfolio.Balance;
       let stockInfo = req.body.stockInfo;
-      let buyDate = new Date();
+      let date = new Date();
       let soldStock = {
         symbol: stockInfo,
         volume: stockInfo.volume,
-        sellPrice: stockInfo.buyPrice,
-        sellDate: buyDate.getTime()
+        price: stockInfo.price,
+        date: date.getTime()
       }
-      let soldIndex = updatedStocks.indexOf(stockInfo);
-      updatedStocks = updatedStocks.splice(soldIndex, 1);
-      updatedBalance += (stockInfo.buyPrice * stockInfo.volume);
-      res.send({updatedStocks, updatedBalance})
-      // UserPortfolioModel.findOneAndUpdate(
-      //   { "Email": req.body.email },
-      //   {
-      //     "Stocks": updatedStocks,
-      //     "SoldStocks": soldStock,
-      //     "Balance": updatedBalance
-      //   },
-      //   { new: true },
-      //   (err, updatedPortfolio) => {
-      //     if (err) {
-      //       throw err;
-      //     } else {
-      //       console.log("Updated");
-      //       res.send({updatedPortfolio, hasEnoughMoney: true});
-      //     }
-      //   }
-      // );
+      let soldIndex = 0;
+      for (let i=0; i<stocks.length; i++) {
+        if (stockInfo.symbol === stocks[i].symbol && stockInfo.date === stocks[i].date) {
+          updatedBalance += (stockInfo.price * stockInfo.volume);
+          updatedSoldStocks.push(removedStock);
+        } else {
+          updatedStocks.push(stocks[i]);
+        }
+      }
+      let removedStock = updatedStocks.splice(soldIndex, 1);
+
+      // res.send({removedStocks, updatedStocks, updatedBalance})
+      UserPortfolioModel.findOneAndUpdate(
+        { "Email": req.body.email },
+        {
+          "Stocks": updatedStocks,
+          "SoldStocks": soldStock,
+          "Balance": updatedBalance
+        },
+        { new: true },
+        (err, updatedPortfolio) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Updated");
+            res.send({updatedPortfolio, hasEnoughMoney: true});
+          }
+        }
+      );
   });
 })
 

@@ -58,7 +58,7 @@ class BuyButton extends Component {
     const stockInfo = {
       volume: this.state.numberOfStocks,
       symbol: this.props.data.symbol,
-      buyPrice: this.props.data.lastSalePrice
+      price: -this.props.data.lastSalePrice
     }
     axios.put("http://localhost:8080/stockapi/updatePortfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
       .then(res => {

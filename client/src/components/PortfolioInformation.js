@@ -26,13 +26,13 @@ class PortfolioInformation extends Component {
                                 {stock.symbol}
                               </Table.Cell>
                               <Table.Cell singleLine>
-                                ${stock.buyPrice.toFixed(2)}
+                                ${stock.price.toFixed(2)}
                               </Table.Cell>
                               <Table.Cell singleLine>
                                 {stock.volume}
                               </Table.Cell>
                               <Table.Cell singleLine>
-                                ${(stock.volume * stock.buyPrice).toFixed(2)}
+                                ${(stock.volume * stock.price).toFixed(2)}
                               </Table.Cell>
                               <Table.Cell singleLine>
                                 {buyDate}

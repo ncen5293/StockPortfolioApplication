@@ -7,7 +7,9 @@ class PortfolioPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockData: [],
+      boughtStocks: [],
+      soldStocks: [],
+      allStocks: [],
       gotStockInfo: false
     }
   }
@@ -17,7 +19,12 @@ class PortfolioPage extends Component {
       .then(res => {
         if (res.data.correctInfo) {
           console.log(res.data.portfolio.Stocks);
-          this.setState({ stockData: res.data.portfolio.Stocks, gotStockInfo: true });
+          this.setState({
+            boughtStocks: res.data.portfolio.Stocks,
+            soldStocks: res.data.portfolio.SoldStocks,
+            allStocks: res.data.portfolio.AllStocks,
+            gotStockInfo: true
+          });
         } else {
           this.setState({loginError: true});
         }
@@ -39,9 +46,8 @@ class PortfolioPage extends Component {
     if (this.state.gotStockInfo) {
       return (
         <Tab panes={[
-          { menuItem: 'Bought Stocks', render: () => <Tab.Pane><PortfolioInformation type="Buy" stockData={this.state.stockData} /></Tab.Pane> },
-          { menuItem: 'Sold Stocks', render: () => <Tab.Pane><PortfolioInformation type="Sell" stockData={this.state.stockData} /></Tab.Pane> },
-          { menuItem: 'All Trades', render: () => <Tab.Pane><PortfolioInformation type="Transaction" stockData={this.state.stockData} /></Tab.Pane> }
+          { menuItem: 'Bought Stocks', render: () => <Tab.Pane><PortfolioInformation type="Buy" stockData={this.state.boughtStocks} /></Tab.Pane> },
+          { menuItem: 'Sold Stocks', render: () => <Tab.Pane><PortfolioInformation type="Sell" stockData={this.state.boughtStocks} /></Tab.Pane> }
         ]}
         />
       );
