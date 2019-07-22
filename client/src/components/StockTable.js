@@ -24,15 +24,11 @@ class StockTable extends Component {
           columnDefs={[{
                   headerName: "Stock Symbol", field: "symbol"
                 }, {
-                  headerName: "Market %", valueGetter: (params) => (params.data.marketPercent * 100).toFixed(2) + '%'
+                  headerName: "Current Price Per Stock", valueGetter: (params) => '$' + params.data.price.toFixed(2)
                 }, {
-                  headerName: "Shares", field: "volume"
-                }, {
-                  headerName: "Last Sale (volume x price)", valueGetter: (params) => params.data.lastSaleSize + ' x $' + params.data.lastSalePrice
-                }, {
-                  headerName: "Last Sale Date",  valueGetter: (params) => {
-                    if (params.data.lastSaleTime > 0) {
-                      let lastSaleTime = new Date(params.data.lastSaleTime);
+                  headerName: "Price Update Date",  valueGetter: (params) => {
+                    if (params.data.time > 0) {
+                      let lastSaleTime = new Date(params.data.time);
                       return lastSaleTime.toUTCString();
                     } else {
                       return 'N/A'

@@ -18,33 +18,59 @@ class PortfolioInformation extends Component {
       url: `https://api.iextrading.com/1.0/tops/last?symbols=${stock.symbol}`
     })
       .then (res => {
-        let buyDate = new Date(stock.buyDate);
-        buyDate = buyDate.toUTCString();
-        let stockInfo = ( <Table.Body key={i} >
-                            <Table.Row>
-                              <Table.Cell singleLine>
-                                {stock.symbol}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                ${stock.price.toFixed(2)}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                {stock.volume}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                ${(stock.volume * stock.price).toFixed(2)}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                {buyDate}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                ${res.data[0].price.toFixed(2)}
-                              </Table.Cell>
-                              <Table.Cell singleLine>
-                                <SellButton stockInfo={stock} />
-                              </Table.Cell>
-                            </Table.Row>
-                          </Table.Body>);
+        let date = new Date(stock.date);
+        date = date.toUTCString();
+        let stockInfo;
+        if (this.props.type === 'Buy') {
+          stockInfo = ( <Table.Body key={i} >
+                              <Table.Row>
+                                <Table.Cell singleLine>
+                                  {stock.symbol}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  -${stock.price.toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  {stock.volume}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  -${(stock.volume * stock.price).toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  {date}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  ${res.data[0].price.toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  <SellButton stockInfo={stock} sellPrice={res.data[0].price.toFixed(2)} />
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>);
+        } else {
+          stockInfo = ( <Table.Body key={i} >
+                              <Table.Row>
+                                <Table.Cell singleLine>
+                                  {stock.symbol}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  ${stock.price.toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  {stock.volume}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  ${(stock.volume * stock.price).toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  {date}
+                                </Table.Cell>
+                                <Table.Cell singleLine>
+                                  ${res.data[0].price.toFixed(2)}
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>);
+        }
         this.setState((state) => {
           const stockRows = state.stockRows.concat(stockInfo);
           return { stockRows };
@@ -64,7 +90,7 @@ class PortfolioInformation extends Component {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell singleLine>Stock Symbol</Table.HeaderCell>
-            <Table.HeaderCell singleLine>{`${this.props.type} Price`}</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Transaction</Table.HeaderCell>
             <Table.HeaderCell singleLine>Volume</Table.HeaderCell>
             <Table.HeaderCell singleLine>Total</Table.HeaderCell>
             <Table.HeaderCell singleLine>{`${this.props.type} Date`}</Table.HeaderCell>

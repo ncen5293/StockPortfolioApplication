@@ -11,9 +11,14 @@ class SellButton extends Component {
   }
 
   sellStocks = () => {
-    axios.put("http://localhost:8080/stockapi/sellStocks", { email: localStorage.getItem('email'), stockInfo: this.props.stockInfo })
+    axios.put("http://localhost:8080/stockapi/sellStocks", {
+      email: localStorage.getItem('email'),
+      stockInfo: this.props.stockInfo,
+      sellPrice: this.props.sellPrice
+    })
       .then(res => {
         console.log(res.data);
+        localStorage.setItem('balance', res.data.updatedPortfolio.Balance);
       })
       .catch(error => {
         console.error(error)
@@ -34,7 +39,7 @@ class SellButton extends Component {
         <Modal size="mini" open={this.state.isSellConfirmOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSellModal} >
           <Modal.Header>Sell {this.props.stockInfo.symbol} Stocks?</Modal.Header>
           <Modal.Content>
-            {`Sell ${this.props.stockInfo.volume} stocks @ $${this.props.stockInfo.buyPrice.toFixed(2)}? Total: $${this.props.stockInfo.volume * this.props.stockInfo.buyPrice.toFixed(2)}`}
+            {`Sell ${this.props.stockInfo.volume} stocks @ $${this.props.stockInfo.price.toFixed(2)}? Total: $${this.props.stockInfo.volume * this.props.stockInfo.price.toFixed(2)}`}
           </Modal.Content>
           <Modal.Actions>
             <Button primary onClick={this.sellStocks} >Sell Stocks</Button>

@@ -21,11 +21,26 @@ class Navigation extends Component {
   onSearchEnter = (event) => {
     if (event.key === 'Enter') {
       let searchValue = this.state.searchInput;
+      let encodedValue = encodeURI(searchValue);
       axios({
         method: 'GET',
-        url: `https://api.iextrading.com/1.0/deep?symbols=${searchValue}`
+        url: `https://api.iextrading.com/1.0/tops/last?symbols=${encodedValue}`
       })
-        .then (res => this.setState({stockData: res.data, searchInput: '', isSearchOpen: true}))
+        .then (res => {
+          if (res.data.length > 0) {
+            this.setState({stockData: res.data[0], searchInput: '', isSearchOpen: true})
+          } else {
+            this.setState({
+              stockData: {
+                symbol: searchValue,
+                price: 0,
+                time: -1
+              },
+              searchInput: '',
+              isSearchOpen: true
+            })
+          }
+        })
     }
   }
 

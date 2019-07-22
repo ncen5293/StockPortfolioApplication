@@ -9,7 +9,6 @@ class PortfolioPage extends Component {
     this.state = {
       boughtStocks: [],
       soldStocks: [],
-      allStocks: [],
       gotStockInfo: false
     }
   }
@@ -18,11 +17,9 @@ class PortfolioPage extends Component {
     axios.get("http://localhost:8080/stockapi/getUser", {params: { email: localStorage.getItem('email'), password: '' }})
       .then(res => {
         if (res.data.correctInfo) {
-          console.log(res.data.portfolio.Stocks);
           this.setState({
             boughtStocks: res.data.portfolio.Stocks,
             soldStocks: res.data.portfolio.SoldStocks,
-            allStocks: res.data.portfolio.AllStocks,
             gotStockInfo: true
           });
         } else {
@@ -44,12 +41,19 @@ class PortfolioPage extends Component {
 
   render() {
     if (this.state.gotStockInfo) {
+      console.log(this.state.boughtStocks);
+      console.log(this.state.soldStocks);
+      const boughtStocks = this.state.boughtStocks;
+      const soldStocks = this.state.soldStocks;
+      const panes = [
+        { menuItem: 'Current Stocks', pane: (<Tab.Pane key="buyTab" ><PortfolioInformation type="Buy" stockData={boughtStocks} /></Tab.Pane>) },
+        { menuItem: 'Sold Stocks', pane: (<Tab.Pane key="soldTab" ><PortfolioInformation type="Sell" stockData={soldStocks} /></Tab.Pane>) }
+      ]
       return (
-        <Tab panes={[
-          { menuItem: 'Bought Stocks', render: () => <Tab.Pane><PortfolioInformation type="Buy" stockData={this.state.boughtStocks} /></Tab.Pane> },
-          { menuItem: 'Sold Stocks', render: () => <Tab.Pane><PortfolioInformation type="Sell" stockData={this.state.boughtStocks} /></Tab.Pane> }
-        ]}
-        />
+        <div>
+          <h1>{`Available Balance: $${localStorage.getItem('balance')}`}</h1>
+          <Tab panes={ panes } renderActiveOnly={false} />
+        </div>
       );
     } else {
       return (

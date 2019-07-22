@@ -13,7 +13,7 @@ class Home extends Component {
   getStockData = () => {
     axios({
       method: 'GET',
-      url: 'https://api.iextrading.com/1.0/tops'
+      url: 'https://api.iextrading.com/1.0/tops/last'
     })
       .then (res => {
         console.log('got iex stock info')

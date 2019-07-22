@@ -20,9 +20,8 @@ const UserPortfolioSchema = new Schema({
   Name: String,
   Email: {type: String, unique: true},
   Password: String,
-  Stocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
-  SoldStocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
-  Allstocks: [{ symbol: String, volume: Number, price: Number, date: Number }],
+  Stocks: [{ symbol: String, volume: Number, price: Number, date: Number, _id: ObjectId }],
+  SoldStocks: [{ symbol: String, volume: Number, price: Number, date: Number, _id: ObjectId }],
   Balance: Number
 });
 
@@ -77,30 +76,28 @@ router.put("/sellStocks", (req,res) => {
       let updatedSoldStocks = portfolio.SoldStocks;
       let updatedBalance = portfolio.Balance;
       let stockInfo = req.body.stockInfo;
+      let sellPrice = req.body.sellPrice;
       let date = new Date();
       let soldStock = {
-        symbol: stockInfo,
+        symbol: stockInfo.symbol,
         volume: stockInfo.volume,
         price: stockInfo.price,
         date: date.getTime()
       }
-      let soldIndex = 0;
       for (let i=0; i<stocks.length; i++) {
         if (stockInfo.symbol === stocks[i].symbol && stockInfo.date === stocks[i].date) {
-          updatedBalance += (stockInfo.price * stockInfo.volume);
-          updatedSoldStocks.push(removedStock);
+          updatedBalance += (sellPrice * stockInfo.volume);
+          console.log(soldStock);
+          updatedSoldStocks.push(soldStock);
         } else {
           updatedStocks.push(stocks[i]);
         }
       }
-      let removedStock = updatedStocks.splice(soldIndex, 1);
-
-      // res.send({removedStocks, updatedStocks, updatedBalance})
       UserPortfolioModel.findOneAndUpdate(
         { "Email": req.body.email },
         {
           "Stocks": updatedStocks,
-          "SoldStocks": soldStock,
+          "SoldStocks": updatedSoldStocks,
           "Balance": updatedBalance
         },
         { new: true },
@@ -141,24 +138,22 @@ router.get("/getUser", (req,res) => {
 router.post("/setUser", (req, res) => {
   console.log(req.body);
   let newUser = req.body;
-  let emailInUse = false;
   UserPortfolioModel.findOne({'Email': newUser.Email},
     (err, user) => {
       if (err) {
         return handleError(err);
       }
       if (!user) {
-        newUser._id = mongoose.Types.ObjectId();;
+        newUser._id = mongoose.Types.ObjectId();
         let newUserPortfolioModel = new UserPortfolioModel(newUser);
         newUserPortfolioModel.save((err) => {
           if (err) {
             return handleError(err);
           }
         })
-        res.status(201).json({ error: null, emailInUse, newUser });
+        res.status(201).json({ error: null, emailInUse: false, newUser });
       } else {
-        emailInUse = true;
-        res.status(201).json({ error: null, emailInUse });
+        res.status(201).json({ error: null, emailInUse: true });
       }
   });
 })

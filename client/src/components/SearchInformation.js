@@ -4,41 +4,28 @@ import { Table } from 'semantic-ui-react';
 class SearchInformation extends Component {
   render() {
     let stockData = this.props.data;
-    if (stockData.lastSaleTime > 0) {
-      let lastSaleTime = new Date(stockData.lastSaleTime);
-      stockData.lastSaleTime = lastSaleTime.toUTCString();
+    if (stockData.time > 0) {
+      let lastSaleTime = new Date(stockData.time);
+      stockData.time = lastSaleTime.toUTCString();
     } else {
-      stockData.lastSaleTime = 'N/A'
+      stockData.time = 'N/A'
     }
-    stockData.marketPercent = stockData.marketPercent * 100;
     return (
       <Table celled padded>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell singleLine>Market %</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Shares</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Last Sale Price</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Last Sale Volume</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Last Sale Date</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Current Price</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Price Update Date</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           <Table.Row>
             <Table.Cell singleLine>
-              {stockData.marketPercent.toFixed(2)}%
+              ${stockData.price.toFixed(2)}
             </Table.Cell>
             <Table.Cell singleLine>
-              {stockData.volume}
-            </Table.Cell>
-            <Table.Cell singleLine>
-              ${stockData.lastSalePrice}
-            </Table.Cell>
-            <Table.Cell singleLine>
-              {stockData.lastSaleSize}
-            </Table.Cell>
-            <Table.Cell singleLine>
-              {stockData.lastSaleTime}
+              {stockData.time}
             </Table.Cell>
           </Table.Row>
         </Table.Body>

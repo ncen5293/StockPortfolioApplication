@@ -34,7 +34,7 @@ class SignUpButton extends Component {
             localStorage.setItem('isLoggedIn', true);
             localStorage.setItem('name', res.data.newUser.Name);
             localStorage.setItem('email', res.data.newUser.Email);
-            localStorage.setItem('balance', res.data.portfolio.Balance);
+            localStorage.setItem('balance', res.data.newUser.Balance);
             window.location.reload();
           } else {
             this.setState({existingEmail: true});
