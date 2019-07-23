@@ -9,6 +9,7 @@ class PortfolioPage extends Component {
     this.state = {
       boughtStocks: [],
       soldStocks: [],
+      allStocks: [],
       gotStockInfo: false
     }
   }
@@ -20,6 +21,7 @@ class PortfolioPage extends Component {
           this.setState({
             boughtStocks: res.data.portfolio.Stocks,
             soldStocks: res.data.portfolio.SoldStocks,
+            allStocks: res.data.portfolio.AllStocks,
             gotStockInfo: true
           });
         } else {
@@ -45,13 +47,15 @@ class PortfolioPage extends Component {
       console.log(this.state.soldStocks);
       const boughtStocks = this.state.boughtStocks;
       const soldStocks = this.state.soldStocks;
+      const allStocks = this.state.allStocks;
       const panes = [
         { menuItem: 'Current Stocks', pane: (<Tab.Pane key="buyTab" ><PortfolioInformation type="Buy" stockData={boughtStocks} /></Tab.Pane>) },
-        { menuItem: 'Sold Stocks', pane: (<Tab.Pane key="soldTab" ><PortfolioInformation type="Sell" stockData={soldStocks} /></Tab.Pane>) }
+        { menuItem: 'Sold Stocks', pane: (<Tab.Pane key="soldTab" ><PortfolioInformation type="Sell" stockData={soldStocks} /></Tab.Pane>) },
+        { menuItem: 'All Stocks', pane: (<Tab.Pane key="allTab" ><PortfolioInformation type="All" stockData={allStocks} /></Tab.Pane>) }
       ]
       return (
         <div>
-          <h1>{`Available Balance: $${localStorage.getItem('balance')}`}</h1>
+          <h1>{`Available Balance: $${parseFloat(localStorage.getItem('balance')).toFixed(2)}`}</h1>
           <Tab panes={ panes } renderActiveOnly={false} />
         </div>
       );

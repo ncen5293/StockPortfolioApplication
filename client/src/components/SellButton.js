@@ -35,7 +35,7 @@ class SellButton extends Component {
   render() {
     return (
       <div>
-        <Button size="mini" onClick={this.toggleSellModal} icon='shopping cart' labelPosition='left' content="Sell"/>
+        <Button size="mini" onClick={this.toggleSellModal} color='blue' icon='shopping cart' labelPosition='left' content="Sell"/>
         <Modal size="mini" open={this.state.isSellConfirmOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleSellModal} >
           <Modal.Header>Sell {this.props.stockInfo.symbol} Stocks?</Modal.Header>
           <Modal.Content>

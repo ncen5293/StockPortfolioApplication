@@ -20,8 +20,9 @@ const UserPortfolioSchema = new Schema({
   Name: String,
   Email: {type: String, unique: true},
   Password: String,
-  Stocks: [{ symbol: String, volume: Number, price: Number, date: Number, _id: ObjectId }],
-  SoldStocks: [{ symbol: String, volume: Number, price: Number, date: Number, _id: ObjectId }],
+  Stocks: [{ symbol: String, volume: Number, price: Number, date: Number, reason: String }],
+  SoldStocks: [{ symbol: String, volume: Number, price: Number, date: Number, reason: String }],
+  AllStocks: [{ symbol: String, volume: Number, price: Number, date: Number, reason: String }],
   Balance: Number
 });
 
@@ -36,16 +37,20 @@ router.put("/updatePortfolio", (req,res) => {
       }
       let updatedStocks = portfolio.Stocks;
       let updatedBalance = portfolio.Balance;
+      let updatedAllStocks = portfolio.AllStocks;
       let stockInfo = req.body.stockInfo;
       let date = new Date();
       stockInfo.date = date.getTime();
-      updatedStocks.push(req.body.stockInfo);
-      updatedBalance -= (req.body.stockInfo.price * req.body.stockInfo.volume);
+      stockInfo.reason = "Buy";
+      updatedStocks.push(stockInfo);
+      updatedAllStocks.push(stockInfo);
+      updatedBalance -= (stockInfo.price * stockInfo.volume);
       if (portfolio.Balance > 0) {
         UserPortfolioModel.findOneAndUpdate(
           { "Email": req.body.email },
           {
             "Stocks": updatedStocks,
+            "AllStocks": updatedAllStocks,
             "Balance": updatedBalance
           },
           { new: true },
@@ -74,6 +79,7 @@ router.put("/sellStocks", (req,res) => {
       let stocks = portfolio.Stocks;
       let updatedStocks = [];
       let updatedSoldStocks = portfolio.SoldStocks;
+      let updatedAllStocks = portfolio.AllStocks;
       let updatedBalance = portfolio.Balance;
       let stockInfo = req.body.stockInfo;
       let sellPrice = req.body.sellPrice;
@@ -81,14 +87,16 @@ router.put("/sellStocks", (req,res) => {
       let soldStock = {
         symbol: stockInfo.symbol,
         volume: stockInfo.volume,
-        price: stockInfo.price,
-        date: date.getTime()
+        price: sellPrice,
+        date: date.getTime(),
+        reason: "Sell"
       }
       for (let i=0; i<stocks.length; i++) {
         if (stockInfo.symbol === stocks[i].symbol && stockInfo.date === stocks[i].date) {
           updatedBalance += (sellPrice * stockInfo.volume);
           console.log(soldStock);
           updatedSoldStocks.push(soldStock);
+          updatedAllStocks.push(soldStock);
         } else {
           updatedStocks.push(stocks[i]);
         }
@@ -98,6 +106,7 @@ router.put("/sellStocks", (req,res) => {
         {
           "Stocks": updatedStocks,
           "SoldStocks": updatedSoldStocks,
+          "AllStocks": updatedAllStocks,
           "Balance": updatedBalance
         },
         { new: true },

@@ -29,7 +29,10 @@ class Home extends Component {
     if (localStorage.getItem('isLoggedIn') === 'true') {
       return (
         <div>
-          <StockTable stockData={this.state.stockData} tableName={`Tops - Available Balance: $${localStorage.getItem('balance')}`} />
+          <StockTable
+            stockData={this.state.stockData}
+            tableName={`Tops - Available Balance: $${parseFloat(localStorage.getItem('balance')).toFixed(2)}`}
+          />
         </div>
       );
     } else {

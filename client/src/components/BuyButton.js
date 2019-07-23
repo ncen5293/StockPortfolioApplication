@@ -80,7 +80,7 @@ class BuyButton extends Component {
             <Form onSubmit={this.attemptBuyStocks} >
               <Form.Field>
                 <label>Stock Amount</label>
-                <input defaultValue={1} min={1} type="number" name="amount" placeholder='0' style={{'width':'65%'}} />
+                <input defaultValue={1} min={1} type="number" name="amount" style={{'width':'65%'}} />
                 <span className="salePrice" >@ ${this.props.data.price}</span>
               </Form.Field>
               <Button primary type='submit'>Buy</Button>
@@ -92,7 +92,10 @@ class BuyButton extends Component {
           <Header icon='shopping cart' content='Buy Confirmation' />
           <Modal.Content>
             <p>
-              {this.state.numberOfStocks} Stock(s) @ ${this.props.data.price} for {this.props.data.symbol}?
+              {this.state.numberOfStocks} Stock(s) @ ${this.props.data.price.toFixed(2)} for {this.props.data.symbol}?
+            </p>
+            <p>
+              Total: ${this.state.numberOfStocks * this.props.data.price.toFixed(2)}
             </p>
           </Modal.Content>
           <Modal.Actions>
