@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/stockapi", stockRouter);
+app.use("/stocks", stockRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello world\n');

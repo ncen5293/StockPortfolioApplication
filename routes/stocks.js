@@ -69,7 +69,7 @@ router.put("/updatePortfolio", (req,res) => {
   });
 })
 
-router.put("/sellStocks", (req,res) => {
+router.put("/sell", (req,res) => {
   console.log(req.body);
   UserPortfolioModel.findOne({ "Email": req.body.email },
     (err, portfolio) => {
@@ -122,7 +122,7 @@ router.put("/sellStocks", (req,res) => {
   });
 })
 
-router.get("/getUser", (req,res) => {
+router.get("/users", (req,res) => {
   console.log(req.query);
   let correctInfo = true;
   const loginInfo = {email: req.query.email, password: req.query.password};
@@ -144,7 +144,7 @@ router.get("/getUser", (req,res) => {
   });
 })
 
-router.post("/setUser", (req, res) => {
+router.post("/users", (req, res) => {
   console.log(req.body);
   let newUser = req.body;
   UserPortfolioModel.findOne({'Email': newUser.Email},

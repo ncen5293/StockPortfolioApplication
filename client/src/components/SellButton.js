@@ -11,7 +11,7 @@ class SellButton extends Component {
   }
 
   sellStocks = () => {
-    axios.put("http://localhost:8080/stockapi/sellStocks", {
+    axios.put("http://localhost:8080/stocks/sell", {
       email: localStorage.getItem('email'),
       stockInfo: this.props.stockInfo,
       sellPrice: this.props.sellPrice
@@ -23,7 +23,7 @@ class SellButton extends Component {
       .catch(error => {
         console.error(error)
       })
-    // window.location.reload();
+    window.location.reload();
   }
 
   toggleSellModal = () => {

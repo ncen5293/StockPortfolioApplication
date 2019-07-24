@@ -15,7 +15,7 @@ class PortfolioPage extends Component {
   }
 
   getUserStocks = () => {
-    axios.get("http://localhost:8080/stockapi/getUser", {params: { email: localStorage.getItem('email'), password: '' }})
+    axios.get("http://localhost:8080/stocks/users", {params: { email: localStorage.getItem('email'), password: '' }})
       .then(res => {
         if (res.data.correctInfo) {
           this.setState({
@@ -51,7 +51,7 @@ class PortfolioPage extends Component {
       const panes = [
         { menuItem: 'Current Stocks', pane: (<Tab.Pane key="buyTab" ><PortfolioInformation type="Buy" stockData={boughtStocks} /></Tab.Pane>) },
         { menuItem: 'Sold Stocks', pane: (<Tab.Pane key="soldTab" ><PortfolioInformation type="Sell" stockData={soldStocks} /></Tab.Pane>) },
-        { menuItem: 'All Stocks', pane: (<Tab.Pane key="allTab" ><PortfolioInformation type="All" stockData={allStocks} /></Tab.Pane>) }
+        { menuItem: 'All Transactions', pane: (<Tab.Pane key="allTab" ><PortfolioInformation type="All" stockData={allStocks} /></Tab.Pane>) }
       ]
       return (
         <div>

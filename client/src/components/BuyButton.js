@@ -51,7 +51,8 @@ class BuyButton extends Component {
 
   confirmBuyStocks = (event) => {
     this.buyStocks();
-    this.setState({isConfirmOpen: false, isBuyOpen: false});
+    // this.setState({isConfirmOpen: false, isBuyOpen: false});
+    window.location.replace('/portfolio');
   }
 
   buyStocks = () => {
@@ -60,7 +61,7 @@ class BuyButton extends Component {
       symbol: this.props.data.symbol,
       price: this.props.data.price
     }
-    axios.put("http://localhost:8080/stockapi/updatePortfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
+    axios.put("http://localhost:8080/stocks/updatePortfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
       .then(res => {
         console.log(res.data);
         localStorage.setItem('balance', res.data.updatedPortfolio.Balance);

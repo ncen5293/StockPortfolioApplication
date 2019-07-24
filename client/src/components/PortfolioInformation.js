@@ -104,9 +104,6 @@ class PortfolioInformation extends Component {
                                 <Table.Cell singleLine>
                                   {stock.reason}
                                 </Table.Cell>
-                                <Table.Cell singleLine>
-                                  <SellButton stockInfo={stock} sellPrice={res.data[0].price.toFixed(2)} />
-                                </Table.Cell>
                               </Table.Row>
                             </Table.Body>);
         } else if (this.props.type === 'All' && stock.reason === 'Sell') {
@@ -133,7 +130,6 @@ class PortfolioInformation extends Component {
                                 <Table.Cell singleLine>
                                   {stock.reason}
                                 </Table.Cell>
-                                <Table.Cell singleLine/>
                               </Table.Row>
                             </Table.Body>);
         }
@@ -196,7 +192,6 @@ class PortfolioInformation extends Component {
               <Table.HeaderCell singleLine>Transaction Date</Table.HeaderCell>
               <Table.HeaderCell singleLine>Current Price</Table.HeaderCell>
               <Table.HeaderCell singleLine>Transaction Type</Table.HeaderCell>
-              <Table.HeaderCell singleLine />
             </Table.Row>
           </Table.Header>
           {this.state.stockRows}

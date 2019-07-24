@@ -28,7 +28,7 @@ class SignUpButton extends Component {
         Stocks: [],
         Balance: 5000
       }
-      axios.post("http://localhost:8080/stockapi/setUser", newUser)
+      axios.post("http://localhost:8080/stocks/users", newUser)
         .then(res => {
           if (!res.data.emailInUse) {
             localStorage.setItem('isLoggedIn', true);

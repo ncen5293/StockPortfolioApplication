@@ -23,7 +23,7 @@ class LoginButton extends Component {
       email: event.target.email.value,
       password: event.target.password.value
     }
-    axios.get("http://localhost:8080/stockapi/getUser", {params: { email:loginInfo.email, password:loginInfo.password }})
+    axios.get("http://localhost:8080/stocks/users", {params: { email:loginInfo.email, password:loginInfo.password }})
       .then(res => {
         if (res.data.correctInfo) {
           localStorage.setItem('isLoggedIn', true);
@@ -49,53 +49,28 @@ class LoginButton extends Component {
                 </Message>;
     }
 
-    if (this.props.isFluid) {
-      return (
-        <div>
-          <Button fluid onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
-          <Modal size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
-            <Modal.Header>Log in to an existing Account</Modal.Header>
-            <Modal.Content>
-              <Form onSubmit={this.loginAccount} >
-                {warning}
-                <Form.Field>
-                  <label>E-mail</label>
-                  <input defaultValue="" name="email" placeholder='example@mail.com' />
-                </Form.Field>
-                <Form.Field>
-                  <label>Password</label>
-                  <input defaultValue="" name="password" placeholder='Password' />
-                </Form.Field>
-                <Button primary type='submit'>Log-in</Button>
-              </Form>
-            </Modal.Content>
-          </Modal>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Button onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
-          <Modal size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
-            <Modal.Header>Log in to an existing Account</Modal.Header>
-            <Modal.Content>
-              <Form onSubmit={this.loginAccount} >
-                {warning}
-                <Form.Field>
-                  <label>E-mail</label>
-                  <input defaultValue="" name="email" placeholder='example@mail.com' />
-                </Form.Field>
-                <Form.Field>
-                  <label>Password</label>
-                  <input defaultValue="" name="password" placeholder='Password' />
-                </Form.Field>
-                <Button primary type='submit'>Log-in</Button>
-              </Form>
-            </Modal.Content>
-          </Modal>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <Button fluid={this.props.isFluid} onClick={this.toggleLogin} icon='user outline' labelPosition='left' content="Log-in"/>
+        <Modal size="mini" open={this.state.isLoginOpen} closeOnEscape={true} closeOnDimmerClick={true} onClose={this.toggleLogin} >
+          <Modal.Header>Log in to an existing Account</Modal.Header>
+          <Modal.Content>
+            <Form onSubmit={this.loginAccount} >
+              {warning}
+              <Form.Field>
+                <label>E-mail</label>
+                <input defaultValue="" name="email" placeholder='example@mail.com' />
+              </Form.Field>
+              <Form.Field>
+                <label>Password</label>
+                <input defaultValue="" name="password" placeholder='Password' />
+              </Form.Field>
+              <Button primary type='submit'>Log-in</Button>
+            </Form>
+          </Modal.Content>
+        </Modal>
+      </div>
+    );
   }
 }
 
