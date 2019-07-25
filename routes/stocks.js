@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
 
 let databaseConnection = "Waiting for Database response...";
 
@@ -124,21 +125,30 @@ router.put("/sell", (req,res) => {
 
 router.get("/users", (req,res) => {
   console.log(req.query);
-  let correctInfo = true;
-  const loginInfo = {email: req.query.email, password: req.query.password};
+  const loginInfo = { email: req.query.email, password: req.query.password };
   UserPortfolioModel.findOne({ "Email": loginInfo.email },
     (err, portfolio) => {
       if (err) {
         return handleError(err);
       }
       console.log(portfolio);
-      if (portfolio && (portfolio.Password === loginInfo.password || loginInfo.password === '')) {
-        console.log('logged in');
-        res.status(201).json({ error: null, portfolio, correctInfo });
+      if (portfolio) {
+        if (loginInfo.password === '') {
+          res.status(201).json({ error: null, portfolio, correctInfo: true });
+        } else {
+          bcrypt.compare(loginInfo.password, portfolio.Password, function(err, gotPassword) {
+            if (gotPassword) {
+              console.log('logged in');
+              res.status(201).json({ error: null, portfolio, correctInfo: true });
+            } else {
+              console.log('wrong info');
+              res.status(201).json({ error: null, portfolio, correctInfo: false });
+            }
+          });
+        }
       } else {
         console.log('wrong info');
-        correctInfo = false;
-        res.status(201).json({ error: null, portfolio, correctInfo });
+        res.status(201).json({ error: null, portfolio, correctInfo: false });
       }
 
   });
@@ -147,23 +157,27 @@ router.get("/users", (req,res) => {
 router.post("/users", (req, res) => {
   console.log(req.body);
   let newUser = req.body;
-  UserPortfolioModel.findOne({'Email': newUser.Email},
-    (err, user) => {
-      if (err) {
-        return handleError(err);
-      }
-      if (!user) {
-        newUser._id = mongoose.Types.ObjectId();
-        let newUserPortfolioModel = new UserPortfolioModel(newUser);
-        newUserPortfolioModel.save((err) => {
-          if (err) {
-            return handleError(err);
-          }
-        })
-        res.status(201).json({ error: null, emailInUse: false, newUser });
-      } else {
-        res.status(201).json({ error: null, emailInUse: true });
-      }
+  let userPassword = req.body.Password;
+  bcrypt.hash(userPassword, 10, function(err, passwordHash) {
+    newUser.Password = passwordHash;
+    UserPortfolioModel.findOne({'Email': newUser.Email},
+      (err, user) => {
+        if (err) {
+          return handleError(err);
+        }
+        if (!user) {
+          newUser._id = mongoose.Types.ObjectId();
+          let newUserPortfolioModel = new UserPortfolioModel(newUser);
+          newUserPortfolioModel.save((err) => {
+            if (err) {
+              return handleError(err);
+            }
+          })
+          res.status(201).json({ error: null, emailInUse: false, newUser });
+        } else {
+          res.status(201).json({ error: null, emailInUse: true });
+        }
+    });
   });
 })
 
