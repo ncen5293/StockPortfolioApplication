@@ -61,7 +61,7 @@ class BuyButton extends Component {
       symbol: this.props.data.symbol,
       price: this.props.data.price
     }
-    axios.put("http://localhost:8080/stocks/updatePortfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
+    axios.put("http://localhost:8080/stocks/portfolio", { email:localStorage.getItem('email'), stockInfo:stockInfo })
       .then(res => {
         console.log(res.data);
         localStorage.setItem('balance', res.data.updatedPortfolio.Balance);

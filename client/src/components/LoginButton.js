@@ -59,11 +59,11 @@ class LoginButton extends Component {
               {warning}
               <Form.Field>
                 <label>E-mail</label>
-                <input defaultValue="" name="email" placeholder='example@mail.com' />
+                <input defaultValue="" type="email" name="email" placeholder='example@mail.com' />
               </Form.Field>
               <Form.Field>
                 <label>Password</label>
-                <input defaultValue="" name="password" placeholder='Password' />
+                <input defaultValue="" type="password" name="password" placeholder='Password' />
               </Form.Field>
               <Button primary type='submit'>Log-in</Button>
             </Form>

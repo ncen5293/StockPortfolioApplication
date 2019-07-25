@@ -28,7 +28,7 @@ const UserPortfolioSchema = new Schema({
 
 const UserPortfolioModel = mongoose.model('user', UserPortfolioSchema);
 
-router.put("/updatePortfolio", (req,res) => {
+router.put("/portfolio", (req,res) => {
   console.log(req.body);
   UserPortfolioModel.findOne({ "Email": req.body.email },
     (err, portfolio) => {
