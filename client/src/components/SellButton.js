@@ -19,6 +19,7 @@ class SellButton extends Component {
       .then(res => {
         console.log(res.data);
         localStorage.setItem('balance', res.data.updatedPortfolio.Balance);
+        // window.location.reload();
       })
       .catch(error => {
         console.error(error)

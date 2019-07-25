@@ -62,7 +62,7 @@ class PortfolioPage extends Component {
     } else {
       return (
         <div>
-          <h1>{`Available Balance: $${localStorage.getItem('balance')}`}</h1>
+          <h1>{`Available Balance: $${parseFloat(localStorage.getItem('balance')).toFixed(2)}`}</h1>
         </div>
       );
     }
