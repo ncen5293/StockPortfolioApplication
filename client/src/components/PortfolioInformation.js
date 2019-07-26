@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table } from 'semantic-ui-react';
+import { Table, Segment, Statistic } from 'semantic-ui-react';
 import SellButton from './SellButton';
 
 class PortfolioInformation extends Component {
@@ -8,7 +8,11 @@ class PortfolioInformation extends Component {
     super(props);
     this.state = {
       stockRows: [],
-      currentStockPrices: []
+      currentStockPrices: [],
+      buyStat: 0,
+      sellStat: 0,
+      buyAmount: 0,
+      sellAmount: 0
     }
   }
 
@@ -30,6 +34,19 @@ class PortfolioInformation extends Component {
           positive = true;
         } else {
           active = true;
+        }
+        if (stock.reason === 'Buy') {
+          this.setState((state) => {
+            const buyStat = state.buyStat + (stock.volume * stock.price);
+            const buyAmount = state.buyAmount+1;
+            return { buyStat, buyAmount };
+          });
+        } else {
+          this.setState((state) => {
+            const sellStat = state.sellStat + (stock.volume * stock.price);
+            const sellAmount = state.sellAmount+1;
+            return { sellStat, sellAmount };
+          });
         }
         if (this.props.type === 'Buy') {
           stockInfo = ( <Table.Body key={i} >
@@ -181,21 +198,47 @@ class PortfolioInformation extends Component {
         </Table>
       );
     } else {
+      const sellStat = this.state.sellStat;
+      const buyStat = this.state.buyStat;
+      const sellAmount = this.state.sellAmount;
+      const buyAmount = this.state.buyAmount;
+      let netGain = '';
+      if (sellStat - buyStat >= 0) {
+        netGain = '+$' + ((sellStat - buyStat).toFixed(2));
+      } else {
+        netGain = '-$' + (Math.abs((sellStat - buyStat).toFixed(2)));
+      }
       return (
-        <Table celled padded>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell singleLine>Stock Symbol</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Transaction Price</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Volume</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Total</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Transaction Date</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Current Price</Table.HeaderCell>
-              <Table.HeaderCell singleLine>Transaction Type</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          {this.state.stockRows}
-        </Table>
+        <div>
+          <Table celled padded>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell singleLine>Stock Symbol</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Transaction Price</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Volume</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Total</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Transaction Date</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Current Price</Table.HeaderCell>
+                <Table.HeaderCell singleLine>Transaction Type</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            {this.state.stockRows}
+          </Table>
+          <Segment inverted>
+            <Statistic inverted color='red' >
+              <Statistic.Value>-${buyStat.toFixed(2)}</Statistic.Value>
+              <Statistic.Label>Total Amount Spent on {buyAmount} Transactions</Statistic.Label>
+            </Statistic>
+            <Statistic inverted color='green' >
+              <Statistic.Value>+${sellStat.toFixed(2)}</Statistic.Value>
+              <Statistic.Label>Total Amount Gained on {sellAmount} Transactions</Statistic.Label>
+            </Statistic>
+            <Statistic inverted >
+              <Statistic.Value>{netGain}</Statistic.Value>
+              <Statistic.Label>Net Gain</Statistic.Label>
+            </Statistic>
+          </Segment>
+        </div>
       );
     }
 
