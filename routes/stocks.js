@@ -29,7 +29,7 @@ const UserPortfolioSchema = new Schema({
 
 const UserPortfolioModel = mongoose.model('user', UserPortfolioSchema);
 
-router.put("/portfolio", (req,res) => {
+router.put("/users/:email/buy", (req,res) => {
   console.log(req.body);
   UserPortfolioModel.findOne({ "Email": req.body.email },
     (err, portfolio) => {
@@ -70,7 +70,7 @@ router.put("/portfolio", (req,res) => {
   });
 })
 
-router.put("/sell", (req,res) => {
+router.put("/users/:email/sell", (req,res) => {
   console.log(req.body);
   UserPortfolioModel.findOne({ "Email": req.body.email },
     (err, portfolio) => {
@@ -123,7 +123,7 @@ router.put("/sell", (req,res) => {
   });
 })
 
-router.get("/users", (req,res) => {
+router.get("/users/:email", (req,res) => {
   console.log(req.query);
   const loginInfo = { email: req.query.email, password: req.query.password };
   UserPortfolioModel.findOne({ "Email": loginInfo.email },
@@ -154,7 +154,7 @@ router.get("/users", (req,res) => {
   });
 })
 
-router.post("/users", (req, res) => {
+router.post("/users/:email", (req, res) => {
   console.log(req.body);
   let newUser = req.body;
   let userPassword = req.body.Password;

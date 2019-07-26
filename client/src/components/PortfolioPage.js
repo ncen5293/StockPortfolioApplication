@@ -15,7 +15,7 @@ class PortfolioPage extends Component {
   }
 
   getUserStocks = () => {
-    axios.get("http://localhost:8080/stocks/users", {params: { email: localStorage.getItem('email'), password: '' }})
+    axios.get(`http://localhost:8080/stocks/users/${localStorage.getItem('email')}`, {params: { email: localStorage.getItem('email'), password: '' }})
       .then(res => {
         if (res.data.correctInfo) {
           this.setState({

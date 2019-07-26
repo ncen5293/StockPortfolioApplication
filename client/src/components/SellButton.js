@@ -11,7 +11,7 @@ class SellButton extends Component {
   }
 
   sellStocks = () => {
-    axios.put("http://localhost:8080/stocks/sell", {
+    axios.put(`http://localhost:8080/stocks/users/${localStorage.getItem('email')}/sell`, {
       email: localStorage.getItem('email'),
       stockInfo: this.props.stockInfo,
       sellPrice: this.props.sellPrice
