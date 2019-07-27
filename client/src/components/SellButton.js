@@ -19,12 +19,11 @@ class SellButton extends Component {
       .then(res => {
         console.log(res.data);
         localStorage.setItem('balance', res.data.updatedBalance);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch(error => {
         console.error(error)
       })
-    window.location.reload();
   }
 
   toggleSellModal = () => {

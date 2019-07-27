@@ -10,8 +10,7 @@ class BuyButton extends Component {
       isWarningOpen: false,
       isConfirmOpen: false,
       numberOfStocks: 0,
-      warningMessage: '',
-      buySuccess: true
+      warningMessage: ''
     }
   }
 
@@ -58,7 +57,6 @@ class BuyButton extends Component {
     }
     if (localStorage.getItem('balance') >= (stockInfo.volume * stockInfo.price)) {
       this.buyStocks(stockInfo);
-      window.location.replace('/portfolio');
     } else {
       this.setState({isConfirmOpen: false, isBuyOpen: false, isWarningOpen: true, warningMessage: 'You do not have enough money!'});
     }
@@ -74,8 +72,9 @@ class BuyButton extends Component {
         if (res.data.hasEnoughMoney) {
           this.setState({ buySuccess: true });
           localStorage.setItem('balance', res.data.updatedPortfolio.Balance);
+          window.location.replace('/portfolio');
         } else {
-          this.setState({ buySuccess: false });
+          this.setState({isConfirmOpen: false, isBuyOpen: false, isWarningOpen: true, warningMessage: 'You do not have enough money!'});
         }
       })
       .catch(error => {

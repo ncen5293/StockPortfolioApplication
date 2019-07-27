@@ -8,7 +8,6 @@ class PortfolioInformation extends Component {
     super(props);
     this.state = {
       stockRows: [],
-      currentStockPrices: [],
       buyStat: 0,
       sellStat: 0,
       buyAmount: 0,
@@ -16,8 +15,8 @@ class PortfolioInformation extends Component {
     }
   }
 
-  getCurrentStockPrice = (stock, i) => {
-    axios({
+  async getCurrentStockPrice (stock, i) {
+    await axios({
       method: 'GET',
       url: `https://api.iextrading.com/1.0/tops/last?symbols=${stock.symbol}`
     })
