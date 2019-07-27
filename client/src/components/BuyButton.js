@@ -10,7 +10,8 @@ class BuyButton extends Component {
       isWarningOpen: false,
       isConfirmOpen: false,
       numberOfStocks: 0,
-      warningMessage: ''
+      warningMessage: '',
+      buySuccess: true
     }
   }
 
@@ -50,24 +51,32 @@ class BuyButton extends Component {
   }
 
   confirmBuyStocks = (event) => {
-    this.buyStocks();
-    // this.setState({isConfirmOpen: false, isBuyOpen: false});
-    window.location.replace('/portfolio');
-  }
-
-  buyStocks = () => {
     const stockInfo = {
       volume: this.state.numberOfStocks,
       symbol: this.props.data.symbol,
       price: this.props.data.price
     }
+    if (localStorage.getItem('balance') >= (stockInfo.volume * stockInfo.price)) {
+      this.buyStocks(stockInfo);
+      window.location.replace('/portfolio');
+    } else {
+      this.setState({isConfirmOpen: false, isBuyOpen: false, isWarningOpen: true, warningMessage: 'You do not have enough money!'});
+    }
+  }
+
+  buyStocks = (stockInfo) => {
     axios.put(`http://localhost:8080/stocks/users/${localStorage.getItem('email')}/buy`, {
         email: localStorage.getItem('email'),
         stockInfo: stockInfo
       })
       .then(res => {
         console.log(res.data);
-        localStorage.setItem('balance', res.data.updatedPortfolio.Balance);
+        if (res.data.hasEnoughMoney) {
+          this.setState({ buySuccess: true });
+          localStorage.setItem('balance', res.data.updatedPortfolio.Balance);
+        } else {
+          this.setState({ buySuccess: false });
+        }
       })
       .catch(error => {
         console.error(error)

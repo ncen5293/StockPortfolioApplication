@@ -46,7 +46,7 @@ router.put("/users/:email/buy", (req,res) => {
       updatedStocks.push(stockInfo);
       updatedAllStocks.push(stockInfo);
       updatedBalance -= (stockInfo.price * stockInfo.volume);
-      if (portfolio.Balance > 0) {
+      if (updatedBalance > 0) {
         UserPortfolioModel.findOneAndUpdate(
           { "Email": req.body.email },
           {
@@ -116,7 +116,7 @@ router.put("/users/:email/sell", (req,res) => {
             throw err;
           } else {
             console.log("Updated");
-            res.send({updatedPortfolio, hasEnoughMoney: true});
+            res.send({updatedPortfolio, updatedBalance, hasEnoughMoney: true});
           }
         }
       );
