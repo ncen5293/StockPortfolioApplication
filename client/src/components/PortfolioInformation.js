@@ -21,6 +21,7 @@ class PortfolioInformation extends Component {
       url: `https://api.iextrading.com/1.0/tops/last?symbols=${stock.symbol}`
     })
       .then (res => {
+        console.log(i);
         let date = new Date(stock.date);
         date = date.toUTCString();
         let stockInfo;
@@ -156,9 +157,9 @@ class PortfolioInformation extends Component {
       })
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     for (let i=0; i<this.props.stockData.length; i++) {
-      this.getCurrentStockPrice(this.props.stockData[i], i);
+      await this.getCurrentStockPrice(this.props.stockData[i], i);
     }
   }
 
